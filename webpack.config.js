@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 function generateHtmlPlugins(templateDir) {
   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
@@ -57,7 +58,8 @@ const pluginsDev = {
         from: './src/fonts',
         to: './fonts'
       }
-    ])
+    ]),
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
   ]
 };
 
@@ -153,10 +155,7 @@ module.exports = (env, argv) => {
                     stage: 0
                   }),
                   require('autoprefixer'),
-                  require('postcss-focus'),
-                  require('postcss-nested'),
-                  require('postcss-simple-vars'),
-                  require('postcss-mixins')
+                  require('postcss-focus')
                 ].concat(postCssProd)
               }
             }
