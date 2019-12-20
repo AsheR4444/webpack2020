@@ -58,8 +58,7 @@ const pluginsDev = {
         from: './src/fonts',
         to: './fonts'
       }
-    ]),
-    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
+    ])
   ]
 };
 
@@ -87,7 +86,8 @@ const pluginsProd = {
     new FaviconsWebpackPlugin({
       logo: './src/favicon/favicon.png',
       prefix: 'favicon/'
-    })
+    }),
+    new ImageminPlugin({ test: /\.(jpe?g|png|gif|svg)$/i })
   ]
 };
 
@@ -176,12 +176,33 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(png|jpg|gif|svg)$/,
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'img',
-            publicPath: '../img'
-          }
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[name].[ext]',
+                outputPath: 'img',
+                publicPath: '../img'
+              }
+            },
+            {
+              loader: 'image-webpack-loader',
+              options: {
+                mozjpeg: {
+                  progressive: true,
+                  quality: 70
+                },
+                optipng: {
+                  progressive: true,
+                  quality: 70
+                },
+                svgo: {
+                  progressive: true,
+                  quality: 70
+                }
+              }
+            }
+          ]
         },
         {
           test: /\.html$/,
