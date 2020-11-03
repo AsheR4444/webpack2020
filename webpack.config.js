@@ -35,6 +35,11 @@ const entries = {
   output: {
     filename: 'js/[name].js'
   },
+  resolve: {
+    alias: {
+        '~': path.resolve(__dirname, './'),
+    }
+  },
   devtool: 'source-map'
 };
 
